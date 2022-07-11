@@ -1,15 +1,16 @@
 {
-  "extends": "next/core-web-vitals",
+	"extends": "next/core-web-vitals",
 	"rules": {
-    "no-unused-vars": [1, { "argsIgnorePattern": "^_" }],
+		"no-unused-vars": [1, {"argsIgnorePattern": "^_"}],
 		"no-shadow": 0,
 		"max-len": [1, {"code": 100}],
+		"quotes": [1, "single"],
 		"semi": 1,
-    "array-element-newline": [0, "always"],
+		"array-element-newline": [0, "always"],
 		"array-bracket-spacing": [1, "always"],
 		"object-curly-spacing": [1, "always"],
 		"computed-property-spacing": [1, "always"],
-    "no-trailing-spaces": [1, { "skipBlankLines": true }]
+		"no-trailing-spaces": [1, {"skipBlankLines": true}]
 		// "space-in-parens": [1, "always"],
 	}
 }
