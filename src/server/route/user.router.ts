@@ -2,6 +2,9 @@ import * as trpc from '@trpc/server';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { createUserSchema, requestOtpSchema } from '../../schema/user.schema';
 import { createRouter } from '../createRouter';
+import { sendLoginEmail } from '../../utils/mailer';
+import { baseUrl } from '../../constants';
+import { encode } from '../../utils/base64';
 
 export const userRouter = createRouter().mutation('register', {
   input: createUserSchema,
@@ -63,6 +66,11 @@ export const userRouter = createRouter().mutation('register', {
         },
       });
       // send email to user
+      sendLoginEmail({
+        token: encode(`${token.id}:${user.email}`),
+        url: baseUrl,
+        email: user.email,
+      });
 
       return true;
     },
