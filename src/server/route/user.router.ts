@@ -1,7 +1,8 @@
 import { createRouter } from '../createRouter';
 
 export const userRouter = createRouter().mutation('register', {
-  async resolve() {
+  async resolve({ ctx }) {
 
+    ctx.prisma;
   }
 });
