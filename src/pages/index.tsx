@@ -13,6 +13,7 @@ const Home: NextPage = () => {
 	return (
 		<div>
 			<Link href='/posts/new'>Create post</Link>
+      <Link href='/posts'>Posts</Link>
 		</div>
 	);
 };

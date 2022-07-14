@@ -10,6 +10,8 @@ function PostListingPage() {
 
 	return (
 		<div>
+			<Link href='/'>Home</Link>
+			<Link href='/posts'>Posts</Link>
 			{data?.map(post => {
 				return (
 					<article key={post.id}>

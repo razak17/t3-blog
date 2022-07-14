@@ -1,4 +1,5 @@
 import Error from 'next/error';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { trpc } from '../../utils/trpc';
 
@@ -19,6 +20,8 @@ function SinglePostPage() {
 
 	return (
 		<div>
+			<Link href='/'>Home</Link>
+			<Link href='/posts'>Posts</Link>
 			<h1>{data?.title}</h1>
 			<p>{data?.body}</p>
 		</div>
