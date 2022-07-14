@@ -4,42 +4,42 @@ import { createUserSchema, requestOtpSchema, verifyOtpSchema } from '../../schem
 import { createRouter } from '../createRouter';
 import { sendLoginEmail } from '../../utils/mailer';
 import { baseUrl } from '../../constants';
-import { encode } from '../../utils/base64';
-import { decode } from 'punycode';
+import { encode, decode } from '../../utils/base64';
 import { signJwt } from '../../utils/jwt';
 import { serialize } from 'cookie';
 
-export const userRouter = createRouter().mutation('register', {
-  input: createUserSchema,
-  async resolve({ ctx, input }) {
-    const { name, email } = input;
+export const userRouter = createRouter()
+  .mutation('register', {
+    input: createUserSchema,
+    async resolve({ ctx, input }) {
+      const { name, email } = input;
 
-    try {
-      const user = await ctx.prisma.user.create({
-        data: {
-          email,
-          name,
-        },
-      });
+      try {
+        const user = await ctx.prisma.user.create({
+          data: {
+            email,
+            name,
+          },
+        });
 
-      return user;
-    } catch (e) {
-      if (e instanceof PrismaClientKnownRequestError) {
-        if (e.code === 'P2002') {
-          throw new trpc.TRPCError({
-            code: 'CONFLICT',
-            message: 'User already exists',
-          });
+        return user;
+      } catch (e) {
+        if (e instanceof PrismaClientKnownRequestError) {
+          if (e.code === 'P2002') {
+            throw new trpc.TRPCError({
+              code: 'CONFLICT',
+              message: 'User already exists',
+            });
+          }
         }
-      }
 
-      throw new trpc.TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong',
-      });
+        throw new trpc.TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Something went wrong',
+        });
+      }
     }
-  }
-})
+  })
   .mutation('request-otp', {
     input: requestOtpSchema,
     async resolve({ input, ctx }) {
@@ -68,9 +68,10 @@ export const userRouter = createRouter().mutation('register', {
           },
         },
       });
+      const encoded = encode(`${token.id}:${user.email}`);
       // send email to user
       sendLoginEmail({
-        token: encode(`${token.id}:${user.email}`),
+        token: encoded,
         url: baseUrl,
         email: user.email,
       });
